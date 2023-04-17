@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application Title="QuanLyBanHang">
+  <BOModel>
+    <Class Name="DevExpress.Persistent.BaseImpl.PermissionPolicy.PermissionPolicyUser" Caption="Base User" />
+  </BOModel>
+  <Options>
+    <LayoutManagerOptions RequiredFieldMark="*" />
+  </Options>
+  <SchemaModules>
+    <SchemaModule Name="CloneObjectModule" Version="22.2.4.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="22.2.4.0" IsNewNode="True" />
+  </SchemaModules>
+  <Views>
+    <ListView Id="ApplicationUser_ListView" Caption="Users" />
+    <ListView Id="Book_ListView" IsGroupPanelVisible="True" ShowAutoFilterRow="True" />
+    <ListView Id="Category_ListView" IsGroupPanelVisible="True" />
+    <ListView Id="Employee_ListView" IsFooterVisible="True" />
+    <ListView Id="LoanCard_ListView" IsGroupPanelVisible="True" />
+    <ListView Id="OfflineEmployee_ListView" IsGroupPanelVisible="True" />
+    <ListView Id="OnlineEmployee_ListView" IsGroupPanelVisible="True" />
+    <ListView Id="Student_ListView" IsGroupPanelVisible="True" />
+  </Views>
+</Application>
