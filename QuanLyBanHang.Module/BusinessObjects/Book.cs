@@ -30,10 +30,11 @@ public class Book : BaseObject
     public override void AfterConstruction()
     {
         base.AfterConstruction();
+        ngayTao = DateTime.Now;
     }
 
     [Persistent("NgayTao")]
-    readonly DateTime ngayTao = DateTime.Now;
+    DateTime ngayTao;
     decimal loanPrice;
     LoanCard loanCard;
     Category category;
@@ -119,7 +120,8 @@ public class Book : BaseObject
     [ModelDefault("DisplayFormat", "D")]
     [PersistentAlias(nameof(ngayTao))]
     [XafDisplayName("Ngày tạo")]
-    public DateTime ExtendedPrice
+    [RuleRequiredField]
+    public DateTime NgayTao
     {
         get => ngayTao;
     }

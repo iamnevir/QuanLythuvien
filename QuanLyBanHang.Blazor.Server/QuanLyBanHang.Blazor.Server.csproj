@@ -9,12 +9,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\images\1.png" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Model.xafml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Model.xafml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\images\1.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DevExpress.ExpressApp.Blazor" Version="22.2.4" />

@@ -19,7 +19,7 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [LookupEditorMode(LookupEditorMode.AllItemsWithSearch)]
 [XafDisplayName("Sinh Viên")]
 [Appearance("StudentActive", AppearanceItemType = "ViewItem", TargetItems = "*",
-    Criteria = "Active=false", Context = "ListView", BackColor = "Red",
+    Criteria = "Active=false", Context = "Any", BackColor = "Red",
         FontColor = "White", FontStyle = FontStyle.Strikeout, Priority = 2)]
 [ImageName("BO_Customer")]
 [XafDefaultProperty("Name")]

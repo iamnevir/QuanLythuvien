@@ -1,8 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Application Title="QuanLyBanHang">
+<Application Title="QuanLyBanHang" Logo="1">
   <BOModel>
     <Class Name="DevExpress.Persistent.BaseImpl.PermissionPolicy.PermissionPolicyUser" Caption="Base User" />
   </BOModel>
+  <NavigationItems>
+    <Items>
+      <Item Id="Mượn-Trả" ImageName="credit-card" />
+      <Item Id="Nhân Viên" ImageName="employee" />
+      <Item Id="Quản lý người dùng" ImageName="programmer" />
+      <Item Id="Quản lý quyền" ImageName="BO_Role" />
+      <Item Id="Reports" ImageName="Action_Report_Object_Inplace_Preview" />
+      <Item Id="Sách" ImageName="book" />
+      <Item Id="State Machine" ImageName="BO_StateMachine" />
+    </Items>
+  </NavigationItems>
   <Options>
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>

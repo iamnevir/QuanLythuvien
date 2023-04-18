@@ -7,6 +7,7 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
+using System.ComponentModel;
 using System.Drawing;
 
 namespace QuanLyBanHang.Module.BusinessObjects;
@@ -22,11 +23,20 @@ namespace QuanLyBanHang.Module.BusinessObjects;
     CustomMessageTemplate = "Ngày trả thực tế phải lớn hơn ngày mượn")]
 [XafDisplayName("Thẻ Mượn")]
 [Appearance("LoanCardObject", AppearanceItemType = "ViewItem", TargetItems = "*",
-    Criteria = "Status=2", Context = "ListView", BackColor = "Green",
+    Criteria = "Status=2", Context = "Any", BackColor = "Green",
         FontColor = "White", FontStyle = FontStyle.Strikeout, Priority = 2)]
 [Appearance("LoanCardObject1", AppearanceItemType = "ViewItem", TargetItems = "*",
-    Criteria = "Status=1", Context = "ListView", BackColor = "Red",
+    Criteria = "Status=1", Context = "Any", BackColor = "Red",
         FontColor = "White", Priority = 2)]
+[Appearance("LoanCardObject2", AppearanceItemType = "ViewItem", TargetItems = "Active",
+    Criteria = "Active=true", Context = "ListView",Enabled =false, BackColor = "Blue",
+        FontColor = "White", Priority = 2)]
+[Appearance("LoanCardObject3", AppearanceItemType = "ViewItem", TargetItems = "*",
+    Criteria = "Active=true", Context = "Any", Enabled = false, Priority = 2)]
+[ListViewFilter("ĐãTrả", "Status=2", ImageName = "PaymentPaid", Index = 0)]
+[ListViewFilter("ChưaTrả", "Status=0", ImageName = "PaymentRefund", Index = 1)]
+[ListViewFilter("QuáHạn", "Status=1", ImageName = "PaymentUnPaid", Index = 2)]
+[DefaultProperty(nameof(LoanCard))]
 [ImageName("Card")]
 public class LoanCard : BaseObject
 {
@@ -38,20 +48,24 @@ public class LoanCard : BaseObject
     {
         base.AfterConstruction();
         Status = Status.ChưaTrả;
+        loanDate = DateTime.Now;
+        createdDate = DateTime.Now;
     }
     [Persistent("ExpectedAmount")]
     decimal expectedAmount;
     [Persistent("CreatedDate")]
-    readonly DateTime createdDate = DateTime.Now;
+    DateTime createdDate;
     Employee employee;
     [Persistent("TotalLoanPrice")]
     decimal totalLoanPrice;
     decimal loanPrice;
     Student student;
     Status status;
+    [Persistent("ActualPaymentDate")]
     DateTime actualPaymentDate;
     DateTime expectedPaymentDate;
-    DateTime loanDate = DateTime.Now;
+    [Persistent("LoanDate")]
+    DateTime loanDate;
     [PersistentAlias(nameof(totalLoanPrice))]
     [ModelDefault("DisplayFormat", "{0,-10:N0}Đ")]
     [XafDisplayName("Tổng tiền phải trả đến hiện tại")]
@@ -79,10 +93,10 @@ public class LoanCard : BaseObject
     [ModelDefault("EditMask", "MMM/d/yyyy hh:mm tt")]
     [ModelDefault("DisplayFormat", "D")]
     [XafDisplayName("Ngày Mượn")]
+    [RuleRequiredField]
     public DateTime LoanDate
     {
         get => loanDate;
-        set => SetPropertyValue(nameof(LoanDate), ref loanDate, value);
     }
     [ModelDefault("EditMask", "MMM/d/yyyy hh:mm tt")]
     [ModelDefault("DisplayFormat", "D")]
@@ -108,24 +122,41 @@ public class LoanCard : BaseObject
     [XafDisplayName("Ngày trả thực tế")]
     public DateTime ActualPaymentDate
     {
-        get => actualPaymentDate;
-        set => SetPropertyValue(nameof(ActualPaymentDate), ref actualPaymentDate, value);
+        get
+        {
+            if (!IsLoading && !IsSaving)
+                UpdateNgayTraThucTe(false);
+            return actualPaymentDate;
+        }
     }
     [PersistentAlias(nameof(createdDate))]
     [XafDisplayName("Ngày tạo thẻ mượn")]
+    [RuleRequiredField]
     public DateTime CreatedDate
     {
         get => createdDate;
     }
-
+    [XafDisplayName("Cho Thuê")]
+    [ModelDefault("AllowEdit", "false")]
+    public bool Active
+    {
+        get => GetPropertyValue<bool>(nameof(Active));
+        set => SetPropertyValue(nameof(Active), value);
+    }
     [XafDisplayName("Trạng Thái")]
     public Status Status
     {
-        get => status;
+        get
+        {
+            if (!IsLoading && !IsSaving && status==Status.QuáHạn)
+                UpdateTrangThaiMuon(false);
+            return status;
+        }
         set => SetPropertyValue(nameof(Status), ref status, value);
     }
 
     [Association("Student-LoanCards")]
+    [RuleRequiredField]
     public Student Student
     {
         get => student;
@@ -139,6 +170,7 @@ public class LoanCard : BaseObject
     }
 
     [Association("Employee-LoanCards")]
+    [RuleRequiredField]
     public Employee Employee
     {
         get => employee;
@@ -168,6 +200,26 @@ public class LoanCard : BaseObject
         if (forceChangeEvents)
             OnChanged(nameof(ExpectedAmount), oldExpectedAmount, expectedAmount);
     }
+    public void UpdateNgayTraThucTe(bool forceChangeEvents)
+    {
+        DateTime? oldDate = actualPaymentDate;
+        if (Status == Status.ĐãTrả)
+        {
+            actualPaymentDate = DateTime.Now;
+        }
+        if (forceChangeEvents)
+            OnChanged(nameof(ActualPaymentDate), oldDate, actualPaymentDate);
+    }
+    public void UpdateTrangThaiMuon(bool forceChangeEvents)
+    {
+        Status? oldStatus = status;
+        if (DateTime.Now>=ExpectedPaymentDate)
+        {
+            status = Status.QuáHạn;
+        }
+        if (forceChangeEvents)
+            OnChanged(nameof(Status), oldStatus, status);
+    }
     [Action(ToolTip = "Gia hạn thẻ mượn thêm một ngày", Caption = "Gia hạn")]
     public void Postpone()
     {
@@ -177,6 +229,12 @@ public class LoanCard : BaseObject
         }
         ExpectedPaymentDate += TimeSpan.FromDays(1);
     }
+    [Action(ToolTip = "Điều chỉnh trạng thái mượn của thẻ", Caption = "Trả sách")]
+    public void StatusChanged()
+    {
+        Status = Status.ĐãTrả;
+    }
+
     protected override void OnLoaded()
     {
         Reset();

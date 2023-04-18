@@ -1,7 +1,7 @@
 ﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.Actions;
+using DevExpress.Persistent.Base;
 using QuanLyBanHang.Module.BusinessObjects;
-
 namespace QuanLyBanHang.Module.Controllers;
 
 
@@ -13,22 +13,20 @@ public partial class BookViewController : ViewController
         InitializeComponent();
         TargetViewType = ViewType.DetailView;
         TargetObjectType = typeof(LoanCard);
-        SimpleAction clearBookAction = new(this, "ClearBookAction", DevExpress.Persistent.Base.PredefinedCategory.View)
+        SimpleAction choThueAction = new(this, "ChoThueAction", PredefinedCategory.View)
         {
-            Caption = "Clear",
-            ConfirmationMessage = "Bạn có muốn xóa sạch sách không?",
-            ImageName = "Action_Clear"
+            Caption = "Cho Thuê",
+            ConfirmationMessage = "Bạn có muốn kích hoạt thẻ mượn này không?",
+            ImageName = "BO_Task"
         };
-        clearBookAction.Execute += ClearBookAction_Execute;
 
+        choThueAction.Execute += ChoThueAction_Execute;
     }
-
-    private void ClearBookAction_Execute(object sender, SimpleActionExecuteEventArgs e)
+    private void ChoThueAction_Execute(object sender, SimpleActionExecuteEventArgs e)
     {
-        while (((LoanCard)View.CurrentObject).Books.Count > 0)
+        if (((LoanCard)View.CurrentObject).Active == false)
         {
-            ((LoanCard)View.CurrentObject).Books.Remove(((LoanCard)View.CurrentObject).Books[0]);
-            ObjectSpace.SetModified(View.CurrentObject,View.ObjectTypeInfo.FindMember(nameof(LoanCard.Books)));
+            ((LoanCard)View.CurrentObject).Active = true;
         }
     }
 }

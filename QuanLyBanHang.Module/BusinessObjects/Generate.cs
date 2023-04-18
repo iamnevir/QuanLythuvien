@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevExpress.Persistent.Base;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Linq;
@@ -14,7 +15,5 @@ namespace QuanLyBanHang.Module.BusinessObjects
         public const string Employee = "Nhân Viên";
         public const string User = "Quản lý người dùng";
         public const string Role = "Quản lý quyền";
-
-
     }
 }

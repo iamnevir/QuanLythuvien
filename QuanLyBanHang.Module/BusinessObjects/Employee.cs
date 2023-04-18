@@ -17,7 +17,7 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [XafDisplayName("Nhân viên")]
 [ImageName("BO_Employee")]
 [Appearance("ActiveRole", AppearanceItemType = "ViewItem",
-    TargetItems = "*", Context = "ListView", Criteria = "Active=true",
+    TargetItems = "*", Context = "Any", Criteria = "Active=true",
     FontColor = "White", BackColor = "Green", Priority = 1)]
 public class Employee : BaseObject
 {

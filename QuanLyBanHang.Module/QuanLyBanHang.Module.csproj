@@ -9,10 +9,18 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Images\book.png" />
+    <None Remove="Images\credit-card.png" />
+    <None Remove="Images\employee.png" />
+    <None Remove="Images\programmer.png" />
     <None Remove="Model.DesignedDiffs.Localization.vi.xafml" />
     <None Remove="Model.DesignedDiffs.xafml" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Images\book.png" />
+    <EmbeddedResource Include="Images\credit-card.png" />
+    <EmbeddedResource Include="Images\employee.png" />
+    <EmbeddedResource Include="Images\programmer.png" />
     <EmbeddedResource Include="Model.DesignedDiffs.Localization.vi.xafml">
       <DependentUpon>Model.DesignedDiffs.xafml</DependentUpon>
     </EmbeddedResource>
@@ -38,8 +46,5 @@
     <PackageReference Include="DevExpress.Persistent.Base" Version="22.2.4" />
     <PackageReference Include="DevExpress.Persistent.BaseImpl.Xpo" Version="22.2.4" />
     <PackageReference Include="MySql.Data" Version="8.0.32.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 </Project>
