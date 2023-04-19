@@ -28,9 +28,6 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [Appearance("LoanCardObject1", AppearanceItemType = "ViewItem", TargetItems = "*",
     Criteria = "Status=1", Context = "Any", BackColor = "Red",
         FontColor = "White", Priority = 2)]
-[Appearance("LoanCardObject2", AppearanceItemType = "ViewItem", TargetItems = "Active",
-    Criteria = "Active=true", Context = "ListView",Enabled =false, BackColor = "Blue",
-        FontColor = "White", Priority = 2)]
 [Appearance("LoanCardObject3", AppearanceItemType = "ViewItem", TargetItems = "*",
     Criteria = "Active=true", Context = "Any", Enabled = false, Priority = 2)]
 [ListViewFilter("ĐãTrả", "Status=2", ImageName = "PaymentPaid", Index = 0)]

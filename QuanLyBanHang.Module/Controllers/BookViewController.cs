@@ -2,31 +2,44 @@
 using DevExpress.ExpressApp.Actions;
 using DevExpress.Persistent.Base;
 using QuanLyBanHang.Module.BusinessObjects;
+
 namespace QuanLyBanHang.Module.Controllers;
-
-
 public partial class BookViewController : ViewController
 {
 
     public BookViewController()
     {
         InitializeComponent();
-        TargetViewType = ViewType.DetailView;
-        TargetObjectType = typeof(LoanCard);
-        SimpleAction choThueAction = new(this, "ChoThueAction", PredefinedCategory.View)
+        Btn_ChoThue();
+    }
+    public void Btn_ChoThue()
+    {
+        var choThueAction = new SimpleAction(this, "ChoThueAction", PredefinedCategory.Edit)
         {
             Caption = "Cho Thuê",
-            ConfirmationMessage = "Bạn có muốn kích hoạt thẻ mượn này không?",
-            ImageName = "BO_Task"
+            ConfirmationMessage = "Bạn có muốn kích hoạt cho thuê thẻ mượn này không?",
+            ImageName = "BO_Task",
+            TargetViewNesting = Nesting.Root,
+            TargetViewType = ViewType.Any,
+            TargetObjectType = typeof(LoanCard),
+            SelectionDependencyType = SelectionDependencyType.RequireMultipleObjects
         };
-
-        choThueAction.Execute += ChoThueAction_Execute;
-    }
-    private void ChoThueAction_Execute(object sender, SimpleActionExecuteEventArgs e)
-    {
-        if (((LoanCard)View.CurrentObject).Active == false)
+        choThueAction.Execute += (s, e) =>
         {
-            ((LoanCard)View.CurrentObject).Active = true;
-        }
+            foreach (LoanCard item in View.SelectedObjects)
+            {
+                if (item.Active == true)
+                {
+                    choThueAction.Enabled["DisableAction"] = false;
+                }
+                else
+                {
+                    item.Active = true;
+                }
+                
+            }
+            ObjectSpace.CommitChanges();
+            Application.ShowViewStrategy.ShowMessage("Xác nhận cho thuê thành công!", InformationType.Success);
+        };
     }
 }
