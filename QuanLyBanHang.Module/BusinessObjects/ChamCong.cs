@@ -17,12 +17,12 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [LookupEditorMode(LookupEditorMode.AllItemsWithSearch)]
 [ListViewFindPanel(true)]
 [XafDisplayName("Chấm Công")]
-//[Appearance("ChamSang", AppearanceItemType = "ViewItem",TargetItems = "Sang", Context = "Any", 
-//    Criteria = "[Sang] = ##Enum#DXApplication.Blazor.Common.Enum+DiemChamCong,chuadiemdanh#",
-//FontColor = "Red", FontStyle =FontStyle.Bold, Priority = 1)]
-//[Appearance("ChamChieu", AppearanceItemType = "ViewItem",TargetItems = "Chieu", Context = "Any", 
-//    Criteria = "[Chieu] = ##Enum#Enum+DiemChamCong,chuadiemdanh#",
-//FontColor = "Red", FontStyle = FontStyle.Bold, Priority = 1)]
+[Appearance("ChamSang", AppearanceItemType = "ViewItem", TargetItems = "Sang", Context = "Any",
+    Criteria = "Sang = 4",
+FontColor = "Red", FontStyle = FontStyle.Bold, Priority = 1)]
+[Appearance("ChamChieu", AppearanceItemType = "ViewItem", TargetItems = "Chieu", Context = "Any",
+    Criteria = "Chieu = 4",
+FontColor = "Red", FontStyle = FontStyle.Bold, Priority = 1)]
 public class ChamCong : BaseObject
 { 
     public ChamCong(Session session)
@@ -47,7 +47,9 @@ public class ChamCong : BaseObject
     int ngoaiGio;
     string note;
     double cong;
-    
+    [Association("NgayLamViec-ChamCongs")]
+    [VisibleInListView(false)]
+    [VisibleInDetailView(false)]
     public NgayLamViec NgayLamViec
     {
         get => ngayLamViec;
@@ -65,8 +67,6 @@ public class ChamCong : BaseObject
         get => tuan;
         set => SetPropertyValue(nameof(Tuan), ref tuan, value);
     }
-    [ModelDefault("EditMask", "MMM/d/yyyy hh:mm tt")]
-    [ModelDefault("DisplayFormat", "D")]
     [XafDisplayName("Thứ")]
     public string Thu
     {

@@ -1,4 +1,5 @@
 ﻿using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
@@ -20,6 +21,8 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [LookupEditorMode(LookupEditorMode.AllItemsWithSearch)]
 [NavigationItem(Generate.Book)]
 [XafDisplayName("Sách")]
+[Appearance("TrangThaiSach", AppearanceItemType = "ViewItem", TargetItems = "TrangThai",
+    Criteria = "TrangThai=1", Context = "Any", BackColor = "Red", Priority = 1)]
 [ImageName("Actions_Book")]
 public class Book : BaseObject
 {
@@ -48,6 +51,7 @@ public class Book : BaseObject
     decimal price;
     string description;
     string name;
+    private FileData document;
     [XafDisplayName("Tên Sách")]
     [RuleRequiredField("Bắt buộc phải có Tên Sách", DefaultContexts.Save, "Trường dữ liệu không được để trống")]
     public string Name
@@ -141,7 +145,49 @@ public class Book : BaseObject
         set => SetPropertyValue(nameof(Image), ref image, value);
     }
 
-
+    [XafDisplayName("Tệp Sách đính kèm")]
+    [DevExpress.Xpo.Aggregated, ExpandObjectMembers(ExpandObjectMembers.Never)]
+    [FileTypeFilter("DocumentFiles", 1, "*.txt", "*.doc")]
+    public FileData Document
+    {
+        get { return document; }
+        set { SetPropertyValue(nameof(Document), ref document, value); }
+    }
+    [XafDisplayName("Trạng thái sách")]
+    [ModelDefault("AllowEdit", "false")]
+    public TrangThai TrangThai
+    {
+        get => GetPropertyValue<TrangThai>(nameof(TrangThai));
+        set
+        {
+            if (Quantity > 0)
+            {
+                SetPropertyValue(nameof(TrangThai), TrangThai.conhang);
+            }
+            else
+            {
+                SetPropertyValue(nameof(TrangThai), TrangThai.hethang);
+            }
+        } 
+    }
+    public void UpdateSoluong(bool forceChangeEvents)
+    {
+        int? oldquantity = Quantity;
+        if (LoanCard.Active == true)
+        {           
+            if (LoanCard.Status == Status.ĐãTrả)
+            {
+                quantity++;
+            }
+            if (loanCard.Status == Status.ChưaTrả || loanCard.Status == Status.QuáHạn)
+            {
+                quantity--;
+            }
+        }
+       
+        if (forceChangeEvents)
+            OnChanged(nameof(Quantity), oldquantity, quantity);
+    }
     [Association("Category-Books")]
     public Category Category
     {
@@ -164,17 +210,17 @@ public class Book : BaseObject
                 oldLoanCard.UpdateLoanPrice(true);
                 oldLoanCard.UpdateTotalLoanPrice(true);
                 oldLoanCard.UpdateExpectedAmount(true);
+                UpdateSoluong(true);
             }
         }
     }
-    private FileData document;
-    [XafDisplayName("Tệp Sách đính kèm")]
-    [DevExpress.Xpo.Aggregated, ExpandObjectMembers(ExpandObjectMembers.Never)]
-    [FileTypeFilter("DocumentFiles", 1, "*.txt", "*.doc")]
-    public FileData Document
-    {
-        get { return document; }
-        set { SetPropertyValue(nameof(Document), ref document, value); }
-    }
 
+
+}
+public enum TrangThai
+{
+    [XafDisplayName("Còn hàng")]
+    conhang,
+    [XafDisplayName("Hết hàng")]
+    hethang
 }

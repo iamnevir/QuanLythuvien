@@ -5,12 +5,16 @@
   </BOModel>
   <NavigationItems>
     <Items>
-      <Item Id="Mượn-Trả" ImageName="credit-card" />
-      <Item Id="Nhân Viên" ImageName="employee" />
+      <Item Id="Nhân Viên" ImageName="employee" Index="0">
+        <Items>
+          <Item Id="NgayLamViec_ListView" Index="0" />
+        </Items>
+      </Item>
+      <Item Id="Mượn-Trả" ImageName="credit-card" Index="" />
       <Item Id="Quản lý người dùng" ImageName="programmer" />
       <Item Id="Quản lý quyền" ImageName="BO_Role" />
       <Item Id="Reports" ImageName="Action_Report_Object_Inplace_Preview" />
-      <Item Id="Sách" ImageName="book" />
+      <Item Id="Sách" ImageName="book" Index="" />
       <Item Id="State Machine" ImageName="BO_StateMachine" />
     </Items>
   </NavigationItems>
@@ -23,10 +27,27 @@
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
+    <DetailView Id="Book_DetailView">
+      <Layout>
+        <LayoutGroup Id="Main">
+          <LayoutGroup Id="SimpleEditors">
+            <LayoutGroup Id="Book">
+              <LayoutGroup Id="Book_col1">
+                <LayoutItem Id="Description" ViewItem="Description" ShowCaption="" Index="1" IsNewNode="True" />
+              </LayoutGroup>
+            </LayoutGroup>
+          </LayoutGroup>
+          <LayoutGroup Id="SizeableEditors">
+            <LayoutItem Id="Description" Removed="True" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </Layout>
+    </DetailView>
     <ListView Id="Book_ListView" IsGroupPanelVisible="True" ShowAutoFilterRow="True" />
     <ListView Id="Category_ListView" IsGroupPanelVisible="True" />
     <ListView Id="Employee_ListView" IsFooterVisible="True" />
     <ListView Id="LoanCard_ListView" IsGroupPanelVisible="True" />
+    <ListView Id="NgayLamViec_ListView" IsGroupPanelVisible="True" />
     <ListView Id="OfflineEmployee_ListView" IsGroupPanelVisible="True" />
     <ListView Id="OnlineEmployee_ListView" IsGroupPanelVisible="True" />
     <ListView Id="Student_ListView" IsGroupPanelVisible="True" />

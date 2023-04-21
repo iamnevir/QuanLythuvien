@@ -2,10 +2,10 @@
 using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Model;
+using DevExpress.ExpressApp.SystemModule;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
-using DevExpress.XtraPrinting.Native;
 using System.Drawing;
 
 namespace QuanLyBanHang.Module.BusinessObjects;
@@ -19,12 +19,19 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [DefaultListViewOptions(MasterDetailMode.ListViewOnly, false, NewItemRowPosition.None)]
 [Appearance("NgayNghi", AppearanceItemType = "ViewItem", TargetItems = "*", Context = "Any",
         Criteria = "NgayNghi=true", FontColor = "Red", FontStyle = FontStyle.Bold, Priority = 1)]
+[ListViewFilter("Tất Cả", "", Index = 0)]
+[ListViewFilter("Hôm Nay", "GetDate([Ngay])=LocalDateTimeToday()", Index = 1)]
+[ListViewFilter("Tháng Này", "[Thang]=GetMonth(LocalDateTimeToday())", Index = 2)]
+[ListViewFilter("Tuần Này", "IsThisWeek(Ngay)=true", Index = 3)]
+[ListViewFilter("Ngày Nghỉ", "NgayNghi=true", Index = 4)]
 public class NgayLamViec : BaseObject
 {
+
     public NgayLamViec(Session session)
         : base(session)
     {
     }
+
     public override void AfterConstruction()
     {
         base.AfterConstruction();
@@ -68,7 +75,7 @@ public class NgayLamViec : BaseObject
         get => nam;
         set => SetPropertyValue(nameof(Nam), ref nam, value);
     }
-    [ModelDefault("AllowEdit","false")]
+    [ModelDefault("AllowEdit", "false")]
     [XafDisplayName("Ngày nghỉ")]
     public bool NgayNghi
     {
@@ -85,5 +92,14 @@ public class NgayLamViec : BaseObject
     public void StatusChanged()
     {
         ngayNghi = true;
+    }
+    [XafDisplayName("Chấm Công")]
+    [Association("NgayLamViec-ChamCongs")]
+    public XPCollection<ChamCong> ChamCongs
+    {
+        get
+        {
+            return GetCollection<ChamCong>(nameof(ChamCongs));
+        }
     }
 }

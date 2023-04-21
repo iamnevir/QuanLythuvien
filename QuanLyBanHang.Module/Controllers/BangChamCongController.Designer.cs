@@ -1,6 +1,6 @@
 ﻿namespace QuanLyBanHang.Module.Controllers
 {
-    partial class ChamCongController
+    partial class BangChamCongController
     {
         /// <summary>
         /// Required designer variable.
