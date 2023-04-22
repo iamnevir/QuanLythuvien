@@ -1,6 +1,7 @@
 ﻿using DevExpress.ExpressApp;
 using DevExpress.ExpressApp.ConditionalAppearance;
 using DevExpress.ExpressApp.DC;
+using DevExpress.ExpressApp.Editors;
 using DevExpress.ExpressApp.Model;
 using DevExpress.ExpressApp.SystemModule;
 using DevExpress.Persistent.Base;
@@ -34,6 +35,8 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [ListViewFilter("ĐãTrả", "Status=2", ImageName = "PaymentPaid", Index = 1)]
 [ListViewFilter("ChưaTrả", "Status=0", ImageName = "PaymentRefund", Index = 2)]
 [ListViewFilter("QuáHạn", "Status=1", ImageName = "PaymentUnPaid", Index = 3)]
+[RuleCriteria("Quyenmuon", DefaultContexts.Save, "Student.Active = true",
+   "Sinh viên này không có quyền mượn!", SkipNullOrEmptyValues = false)]
 [DefaultProperty(nameof(LoanCard))]
 [ImageName("Card")]
 public class LoanCard : BaseObject
@@ -148,17 +151,16 @@ public class LoanCard : BaseObject
     public bool Active
     {
         get => GetPropertyValue<bool>(nameof(Active));
-        //set => SetPropertyValue(nameof(Active), value);
         set
         {
             bool modified = SetPropertyValue(nameof(Active), value);
             if (!IsLoading && !IsSaving && Books != null && modified)
             {
-                foreach(var item in Books)
+                foreach (var item in Books)
                 {
                     item.UpdateSoluong(true);
                 }
-               
+
             }
         }
     }
@@ -167,11 +169,10 @@ public class LoanCard : BaseObject
     {
         get
         {
-            if (!IsLoading && !IsSaving && status==Status.QuáHạn)
+            if (!IsLoading && !IsSaving && status == Status.QuáHạn)
                 UpdateTrangThaiMuon(false);
             return status;
         }
-        //set => SetPropertyValue(nameof(Status), ref status, value);
         set
         {
             bool modified = SetPropertyValue(nameof(Status), ref status, value);
@@ -192,7 +193,7 @@ public class LoanCard : BaseObject
         get => student;
         set => SetPropertyValue(nameof(Student), ref student, value);
     }
-
+    
     [Association("LoanCard-Books")]
     public XPCollection<Book> Books
     {
@@ -243,7 +244,7 @@ public class LoanCard : BaseObject
     public void UpdateTrangThaiMuon(bool forceChangeEvents)
     {
         Status? oldStatus = status;
-        if (DateTime.Now>=ExpectedPaymentDate)
+        if (DateTime.Now >= ExpectedPaymentDate)
         {
             status = Status.QuáHạn;
         }
@@ -264,7 +265,7 @@ public class LoanCard : BaseObject
     {
         Status = Status.ĐãTrả;
     }
-    [Action(ToolTip = "Kích hoạt cho thuê", Caption = "Cho Thuê",ConfirmationMessage ="Xác nhận kích hoạt thẻ mượn?")]
+    [Action(ToolTip = "Kích hoạt cho thuê", Caption = "Cho Thuê", ConfirmationMessage = "Xác nhận kích hoạt thẻ mượn?")]
     public void ChoThue()
     {
         Active = true;

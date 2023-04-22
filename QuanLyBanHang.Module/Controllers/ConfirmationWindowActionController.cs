@@ -24,7 +24,7 @@ public partial class ConfirmationWindowActionController : ViewController
 
     private void SetConfirmationMessage()
     {
-        deleteObjectsViewController.DeleteAction.ConfirmationMessage = String.Format("You are about to delete {0} object(s). Do you want to proceed?", View.SelectedObjects.Count);
+        deleteObjectsViewController.DeleteAction.ConfirmationMessage = String.Format("Bạn sắp xóa {0} đối tượng. Bạn có muốn tiếp tục?", View.SelectedObjects.Count);
     }
 
     protected override void OnDeactivated()

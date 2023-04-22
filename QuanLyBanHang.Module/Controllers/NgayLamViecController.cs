@@ -48,7 +48,6 @@ public partial class NgayLamViecController : ViewController
             var date = GetDates(year, i);
             dates.AddRange(date);
         }
-        List<string> thu = new() { "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy", "Chủ nhật" };
         foreach (var item in dates)
         {
             NgayLamViec nlv = ObjectSpace.CreateObject<NgayLamViec>();

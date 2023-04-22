@@ -17,8 +17,8 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [XafDisplayName("Nhân viên")]
 [ImageName("BO_Employee")]
 [Appearance("ActiveRole", AppearanceItemType = "ViewItem",
-    TargetItems = "*", Context = "Any", Criteria = "Active=true",
-    FontColor = "White", BackColor = "Green", Priority = 1)]
+    TargetItems = "*", Context = "Any", Criteria = "Active=false",
+    FontColor = "Red", FontStyle = System.Drawing.FontStyle.Strikeout, Priority = 1)]
 public class Employee : BaseObject
 {
     public Employee(Session session)
@@ -141,6 +141,7 @@ public class Employee : BaseObject
         set => SetPropertyValue(nameof(ZipCode), ref zipCode, value);
     }
     [XafDisplayName("Kích hoạt quyền")]
+    [CaptionsForBoolValues("Có", "Không")]
     public bool Active
     {
         get => active;

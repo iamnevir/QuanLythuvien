@@ -22,8 +22,8 @@
     <LayoutManagerOptions RequiredFieldMark="*" />
   </Options>
   <SchemaModules>
-    <SchemaModule Name="CloneObjectModule" Version="22.2.4.0" IsNewNode="True" />
-    <SchemaModule Name="SystemModule" Version="22.2.4.0" IsNewNode="True" />
+    <SchemaModule Name="CloneObjectModule" Version="22.2.5.0" IsNewNode="True" />
+    <SchemaModule Name="SystemModule" Version="22.2.5.0" IsNewNode="True" />
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
@@ -43,7 +43,18 @@
         </LayoutGroup>
       </Layout>
     </DetailView>
-    <ListView Id="Book_ListView" IsGroupPanelVisible="True" ShowAutoFilterRow="True" />
+    <ListView Id="Book_ListView" IsGroupPanelVisible="True" ShowAutoFilterRow="True">
+      <Columns>
+        <ColumnInfo Id="TrangThai" PropertyName="TrangThai" Index="11" IsNewNode="True" Removed="True" />
+      </Columns>
+    </ListView>
+    <ListView Id="Book_LookupListView" Criteria="[Quantity] &gt; 0">
+      <Columns>
+        <ColumnInfo Id="Name" Width="327" />
+        <ColumnInfo Id="TrangThai_Copy" PropertyName="TrangThai" Index="11" Width="115" IsNewNode="True" />
+        <ColumnInfo Id="Category_Copy" PropertyName="Category" Index="12" Width="105" IsNewNode="True" />
+      </Columns>
+    </ListView>
     <ListView Id="Category_ListView" IsGroupPanelVisible="True" />
     <ListView Id="Employee_ListView" IsFooterVisible="True" />
     <ListView Id="LoanCard_ListView" IsGroupPanelVisible="True" />

@@ -21,8 +21,10 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [LookupEditorMode(LookupEditorMode.AllItemsWithSearch)]
 [NavigationItem(Generate.Book)]
 [XafDisplayName("Sách")]
-[Appearance("TrangThaiSach", AppearanceItemType = "ViewItem", TargetItems = "TrangThai",
-    Criteria = "TrangThai=1", Context = "Any", BackColor = "Red", Priority = 1)]
+[Appearance("TrangThaiSach", AppearanceItemType = "ViewItem", TargetItems = "Name,TrangThai",
+    Criteria = "TrangThai=1", Context = "Any", FontColor = "Red",FontStyle =System.Drawing.FontStyle.Bold, Priority = 1)]
+[Appearance("TrangThaiSach2", AppearanceItemType = "ViewItem", TargetItems = "*",
+    Criteria = "TrangThai=1", Context = "Any", Enabled = false, Priority = 1)]
 [ImageName("Actions_Book")]
 public class Book : BaseObject
 {
@@ -162,7 +164,7 @@ public class Book : BaseObject
         {
             if (Quantity > 0)
             {
-                SetPropertyValue(nameof(TrangThai), TrangThai.conhang);
+                SetPropertyValue(nameof(TrangThai) ,TrangThai.conhang);
             }
             else
             {
