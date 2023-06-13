@@ -9,6 +9,7 @@ using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
+using QuanLyBanHang.Module.Extension;
 using System.ComponentModel;
 
 namespace QuanLyBanHang.Module.BusinessObjects;
@@ -19,6 +20,7 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [ListViewFindPanel(true)]
 [ListViewAutoFilterRow(true)]
 [LookupEditorMode(LookupEditorMode.AllItemsWithSearch)]
+[CustomNestedListView(nameof(LoanCard),AllowLink =true,AllowUnlink =false,AllowDelete =false,AllowEdit =false)]
 [NavigationItem(Generate.Book)]
 [XafDisplayName("Sách")]
 [Appearance("TrangThaiSach", AppearanceItemType = "ViewItem", TargetItems = "Name,TrangThai",
@@ -138,9 +140,8 @@ public class Book : BaseObject
         get => createdBy;
     }
     [XafDisplayName("Hình Ảnh")]
-    [ImageEditor(ListViewImageEditorMode = ImageEditorMode.PopupPictureEdit,
-    DetailViewImageEditorMode = ImageEditorMode.PictureEdit,
-    ListViewImageEditorCustomHeight = 40)]
+    [Size(1024)]
+    [ImageEditor(ListViewImageEditorCustomHeight = 100, DetailViewImageEditorFixedHeight = 80)]
     public byte[] Image
     {
         get => image;

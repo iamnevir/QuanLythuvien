@@ -8,6 +8,7 @@ using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
+using QuanLyBanHang.Module.Extension;
 using System.ComponentModel;
 using System.Drawing;
 
@@ -31,6 +32,7 @@ namespace QuanLyBanHang.Module.BusinessObjects;
         FontColor = "White", Priority = 2)]
 [Appearance("LoanCardObject3", AppearanceItemType = "ViewItem", TargetItems = "*",
     Criteria = "Active=true", Context = "Any", Enabled = false, Priority = 2)]
+[CustomRootListView(FieldsToSum = new[] { "TotalLoanPrice:Sum", })]
 [ListViewFilter("ĐãTrả", "", Index = 0)]
 [ListViewFilter("ĐãTrả", "Status=2", ImageName = "PaymentPaid", Index = 1)]
 [ListViewFilter("ChưaTrả", "Status=0", ImageName = "PaymentRefund", Index = 2)]

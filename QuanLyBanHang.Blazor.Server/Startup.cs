@@ -9,6 +9,10 @@ using DevExpress.ExpressApp.Xpo;
 using QuanLyBanHang.Blazor.Server.Services;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
 using DevExpress.ExpressApp.Core;
+using DevExpress.ExpressApp.WebApi.Services;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OpenApi.Models;
+using QuanLyBanHang.Module.BusinessObjects;
 
 namespace QuanLyBanHang.Blazor.Server;
 
@@ -23,7 +27,25 @@ public class Startup {
     // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
     public void ConfigureServices(IServiceCollection services) {
         services.AddSingleton(typeof(Microsoft.AspNetCore.SignalR.HubConnectionHandler<>), typeof(ProxyHubConnectionHandler<>));
-
+        services.AddXafWebApi(Configuration, options =>
+        {
+            options.BusinessObject<ApplicationUser>();
+            options.BusinessObject<Book>();
+        }).AddXpoServices();
+        services.AddControllers().AddOData((options, serviceProvider) => {
+            options
+                .AddRouteComponents("api/odata", new EdmModelBuilder(serviceProvider).GetEdmModel())
+                .EnableQueryFeatures(100);
+        });
+        services.AddSwaggerGen(c => {
+            c.EnableAnnotations();
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "Quan ly thu vien",
+                Version = "v1",
+                Description = @"Use AddXafWebApi(Configuration, options) in the MySolution.Blazor.Server\Startup.cs file to make Business Objects available in the Web API."
+            });
+        });
         services.AddRazorPages();
         services.AddServerSideBlazor();
         services.AddHttpContextAccessor();
@@ -39,11 +61,6 @@ public class Startup {
                 })
                 .AddFileAttachments()
                 .AddOffice()
-                .AddReports(options => {
-                    options.EnableInplaceReports = true;
-                    options.ReportDataType = typeof(DevExpress.Persistent.BaseImpl.ReportDataV2);
-                    options.ReportStoreMode = DevExpress.ExpressApp.ReportsV2.ReportStoreModes.XML;
-                })
                 .AddStateMachine(options => {
                     options.StateMachineStorageType = typeof(DevExpress.ExpressApp.StateMachine.Xpo.XpoStateMachine);
                 })
@@ -94,6 +111,10 @@ public class Startup {
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
         if(env.IsDevelopment()) {
             app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "QuanLyBanHang WebApi v1");
+            });
         }
         else {
             app.UseExceptionHandler("/Error");

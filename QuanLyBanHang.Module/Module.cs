@@ -11,6 +11,7 @@ using DevExpress.ExpressApp.Updating;
 using DevExpress.ExpressApp.Model.Core;
 using DevExpress.ExpressApp.Model.DomainLogics;
 using DevExpress.ExpressApp.Model.NodeGenerators;
+using QuanLyBanHang.Module.Extension;
 using DevExpress.Xpo;
 using DevExpress.ExpressApp.Xpo;
 
@@ -37,7 +38,6 @@ public sealed class QuanLyBanHangModule : ModuleBase {
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ConditionalAppearance.ConditionalAppearanceModule));
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Dashboards.DashboardsModule));
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Office.OfficeModule));
-		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ReportsV2.ReportsModuleV2));
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.StateMachine.StateMachineModule));
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.Validation.ValidationModule));
 		RequiredModuleTypes.Add(typeof(DevExpress.ExpressApp.ViewVariantsModule.ViewVariantsModule));
@@ -50,8 +50,29 @@ public sealed class QuanLyBanHangModule : ModuleBase {
         base.Setup(application);
         // Manage various aspects of the application UI and behavior at the module level.
     }
-    public override void CustomizeTypesInfo(ITypesInfo typesInfo) {
+    public override void AddGeneratorUpdaters(ModelNodesGeneratorUpdaters updaters)
+    {
+        base.AddGeneratorUpdaters(updaters);
+        updaters.Add(new ModelNodeController());
+        //updaters.Add(new ModelNodeDetailController());
+    }
+
+    public override void CustomizeTypesInfo(ITypesInfo typesInfo)
+    {
         base.CustomizeTypesInfo(typesInfo);
         CalculatedPersistentAliasHelper.CustomizeTypesInfo(typesInfo);
+
+        foreach (var type in XafTypesInfo.Instance.PersistentTypes)
+        {
+            foreach (var member in type.Members)
+            {
+                if (!member.IsList)
+                {
+                    if (!member.IsAttributeDefined<DetailViewLayoutAttribute>(false))
+                        member.AddAttribute(new DetailViewLayoutAttribute("Detail", 0));
+                }
+
+            }
+        }
     }
 }

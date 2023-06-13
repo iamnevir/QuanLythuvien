@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyBanHang.Module", "Qua
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyBanHang.Blazor.Server", "QuanLyBanHang.Blazor.Server\QuanLyBanHang.Blazor.Server.csproj", "{F7F57889-8A7F-4501-AD4C-22188CF4496D}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuanLyBanHang.WebApi", "QuanLyBanHang.WebApi\QuanLyBanHang.WebApi.csproj", "{021EFF99-E156-41B2-A194-DF6A9D89039D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -26,8 +28,17 @@ Global
 		{F7F57889-8A7F-4501-AD4C-22188CF4496D}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
 		{F7F57889-8A7F-4501-AD4C-22188CF4496D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F7F57889-8A7F-4501-AD4C-22188CF4496D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.EasyTest|Any CPU.ActiveCfg = EasyTest|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.EasyTest|Any CPU.Build.0 = EasyTest|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{021EFF99-E156-41B2-A194-DF6A9D89039D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {253957FA-FBFE-43D8-8AF9-226DAFD36028}
 	EndGlobalSection
 EndGlobal

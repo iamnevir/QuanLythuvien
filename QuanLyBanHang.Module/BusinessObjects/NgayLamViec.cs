@@ -6,6 +6,7 @@ using DevExpress.ExpressApp.SystemModule;
 using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl;
 using DevExpress.Xpo;
+using QuanLyBanHang.Module.Extension;
 using System.Drawing;
 
 namespace QuanLyBanHang.Module.BusinessObjects;
@@ -19,6 +20,9 @@ namespace QuanLyBanHang.Module.BusinessObjects;
 [DefaultListViewOptions(MasterDetailMode.ListViewOnly, false, NewItemRowPosition.None)]
 [Appearance("NgayNghi", AppearanceItemType = "ViewItem", TargetItems = "*", Context = "Any",
         Criteria = "NgayNghi=true", FontColor = "Red", FontStyle = FontStyle.Bold, Priority = 1)]
+
+[CustomNestedListView(nameof(ChamCongs), AllowUnlink = false, AllowLink = false)]
+
 [ListViewFilter("Tất Cả", "", Index = 0)]
 [ListViewFilter("Hôm Nay", "GetDate([Ngay])=LocalDateTimeToday()", Index = 1)]
 [ListViewFilter("Tháng Này", "[Thang]=GetMonth(LocalDateTimeToday())", Index = 2)]
